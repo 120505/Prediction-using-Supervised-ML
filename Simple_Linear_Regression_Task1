@@ -1,0 +1,51 @@
+#Problem Statement : Predict the percentage of marks of an student based on the number of study hours.
+
+#Let's import the 3 basic libraries for the given problem statement.
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+#Lets load the datset on which the pediction is to performed
+dataset=pd.read_excel("Hours_Study_data.xlsx")
+
+#Lets see the data
+dataset.head() # it gives top 5 rows of the given dataset
+dataset.shape   # Data has 25 rows and 2 columns
+
+#Information about the data
+dataset.info()
+
+#Lets find out is there any missing values in dataset
+dataset.isnull().sum() 
+
+#Sepertation of data into independent and dependent variable
+y=dataset["Scores"]
+X=dataset.drop(["Scores"],axis=1) 
+#Here Scores will be the dependent variable i.e "y" and "Hours" is independent variable i.e "X"
+
+#Lets Split dataset into training and testing dataset
+
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(X,y, test_size=0.30)
+
+#Data Visualization
+plt.scatter(x_train,y_train)
+plt.xlabel("Hours")
+plt.ylabel("Scores")
+plt.title("Marks of students based on number of study hours")
+plt.show()
+
+
+#Now our model is ready to train:
+from sklearn.linear_model import LinearRegression
+lr=LinearRegression()
+lr.fit(x_train,y_train)
+
+#Now lets predict score if a student studies for 9.25 hrs/ day?
+ypred=lr.predict([[9.5]])
+y_pred=lr.predict(x_train)
+y_pred=pd.DataFrame(y_pred)
+#Lets check the accuracy of our model
+lr.score(x_train,y_pred)
+
+#Thank you!
